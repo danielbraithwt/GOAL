@@ -1,1 +1,13 @@
 <h1>INDEX</h1>
+
+<label>Add a GOAL</label>
+<input type="text" ng-model="goalName" />
+<a class="btn btn-default" ng-click="addGoal()">ADD!</a>
+
+<hr />
+
+<div id="goals">
+    <div class="goal" ng-repeat="goal in goals">
+        {{ goal }}
+    </div>
+</div>

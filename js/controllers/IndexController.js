@@ -1,5 +1,15 @@
-angular.module('goal').controller('indexController', ['$scope', Index]);
+angular
+    .module('goal')
+    .controller('indexController', ['$scope', Controller]);
 
-function Index($scope) {
-    
-}
+function Controller($scope) {
+
+    $scope.goalName = '';
+    $scope.goals = [];
+    $scope.addGoal = addGoal;
+
+    function addGoal() {
+        $scope.goals.push($scope.goalName);
+        $scope.goalName = '';
+    }
+};
