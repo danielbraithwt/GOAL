@@ -1,13 +1,21 @@
-<h1>INDEX</h1>
-
-<label>Add a GOAL</label>
-<input type="text" ng-model="goalName" />
-<a class="btn btn-default" ng-click="addGoal()">ADD!</a>
-
+<div id="goal_creator" class="col-sm-12">
+    <div class="input-group input-group-lg">
+        <input type="text" class="form-control" placeholder="Goal" 
+           ng-model="goalName" />
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-primary" 
+                    ng-click="addGoal()">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+        </span>
+    </div>
+</div>
+    
 <hr />
 
-<div id="goals">
-    <div class="goal" ng-repeat="goal in goals">
+<div id="goals" class="col-sm-12" style="padding-top: 20px;">
+    <div class="alert alert-info" 
+         ng-repeat="goal in goals">
         {{ goal }}
     </div>
 </div>
