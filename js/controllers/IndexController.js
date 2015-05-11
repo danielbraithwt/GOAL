@@ -1,23 +1,30 @@
-angular
-    .module('goal')
-    .controller('indexController', ['$scope', Controller]);
+(function() {
+    'use strict';
 
-function Controller($scope) {
+    angular
+        .module('goal')
+        .controller('indexController', Controller);
 
-    $scope.goalName = '';
-    $scope.goals = [];
-    $scope.addGoal = addGoal;
-    $scope.removeGoal = removeGoal;
+    Controller.$inject = ['$scope'];
 
-    ///////////////
-    // Functions //
-    
-    function addGoal() {
-        $scope.goals.push($scope.goalName);
-        $scope.goalName = '';
+    /* @ngInject */
+    function Controller($scope){
+        var vm = this;
+        vm.property = 'Controller';
+        vm.goalName = '';
+        vm.goals = [];
+        vm.addGoal = addGoal;
+        vm.removeGoal = removeGoal;
+
+        ////////////////
+
+        function addGoal() {
+            vm.goals.push(vm.goalName);
+            vm.goalName = '';
+        }
+
+        function removeGoal(index) {
+            vm.goals.splice(index, 1);
+        }
     }
-    
-    function removeGoal(index) {
-        $scope.goals.splice(index, 1);
-    }
-};
+})();

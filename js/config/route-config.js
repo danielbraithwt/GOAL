@@ -7,6 +7,7 @@ function configuration ($routeProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'pages/index.html',
-            controller: 'indexController'
+            controller: 'indexController',
+            controllerAs: 'vm'
         });
 }
