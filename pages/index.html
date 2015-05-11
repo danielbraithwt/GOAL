@@ -16,6 +16,17 @@
 <div id="goals" class="col-sm-12" style="padding-top: 20px;">
     <div class="alert alert-info" 
          ng-repeat="goal in goals">
-        {{ goal }}
+        
+        <div class="col-sm-10">
+            {{ goal }}
+        </div>
+        
+        <div class="input-group input-group-sm">
+            <button type="button" class="btn btn-danger btn-sm"
+                    ng-click="removeGoal($index)">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        </div>
+        
     </div>
 </div>
