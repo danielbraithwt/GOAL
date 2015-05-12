@@ -14,9 +14,12 @@
         vm.goalName = '';
         vm.goalImportance = '';
         vm.goals = [];
+		vm.finishedGoals = [];
         vm.addGoal = addGoal;
-        vm.removeGoal = removeGoal;
+        vm.removeSelectedGoals = removeSelectedGoals;
+		vm.markDoneSelectedGoals = markDoneSelectedGoals;
 		vm.getDayImportance = getDayImportance;
+		vm.getDayFinishedImportance = getDayFinishedImportance;
 
         ////////////////
 
@@ -25,6 +28,7 @@
             var goal = {};
             goal.name = vm.goalName;
             goal.importance = parseInt(vm.goalImportance);
+			goal.selected = false;
             
             // Insert the new goal into goals
             vm.goals.push(goal);
@@ -36,9 +40,25 @@
 
         // Removes the goal at index from the array
         // of goals
-        function removeGoal(index) {
-            vm.goals.splice(index, 1);
+        function removeSelectedGoals() {
+			for (var i = 0; i < vm.goals.length; i++) {
+				
+				// If the goal is selected 
+            	if (vm.goals[i].selected === true) {
+					vm.goals.splice(i, 1);
+				}
+			}
         }
+		
+		function markDoneSelectedGoals() {
+			for (var i = 0; i < vm.goals.length; i++) {
+				
+				// If the goal is selected 
+            	if (vm.goals[i].selected === true) {
+					vm.finishedGoals.push(vm.goals.splice(i, 1)[0]);
+				}
+			}	
+		}
         
 		// Get the importance of the current day
         function getDayImportance() {
@@ -48,7 +68,19 @@
 				total += vm.goals[i].importance;
 			}
 			
+			total += vm.getDayFinishedImportance();
+			
 			return total;
         }
+		
+		function getDayFinishedImportance() {
+			var total = 0;
+			
+			for (var i = 0; i < vm.finishedGoals.length; i++) {
+				total += vm.finishedGoals[i].importance;
+			}
+
+			return total;
+		}
     }
 })();
