@@ -1,26 +1,49 @@
-<div class="col-sm-12 col-lg-8 col-lg-offset-2" style="margin-top: 20px;">
-	<div id="goal_creator" class="col-sm-12">
-		<div class="input-group input-group-lg">
-			<input type="text" class="form-control" placeholder="Goal" 
-				   ng-model="vm.goalName" />
+<div style="margin-top: 20px;">
+	<div class="col-sm-9">
+		<div id="goal_creator" class="col-sm-12 goal-add"
+			 ng-show="vm.adding">
+			<div class="input-group input-group-lg">
+				<input type="text" class="form-control" placeholder="Goal" 
+					   ng-model="vm.goalName" />
 
-			<input type="number" class="form-control" placeholder="Importance out of 10"
-				   ng-model="vm.goalImportance" />
+				<input type="number" class="form-control" placeholder="Importance out of 10"
+					   ng-model="vm.goalImportance" />
+			</div>
+		</div>
 
-			<button type="button" class="btn btn-primary" style="margin-top: 20px;" 
-					ng-click="vm.addGoal()">
-				<span class="glyphicon glyphicon-plus"></span>
-			</button>
+		<button type="button" class="btn btn-primary col-sm-10 col-sm-offset-1" style="margin-top: 20px; margin-bottom:20px;" 
+				ng-click="vm.addGoal()">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+		
+		<div id="search" class="col-sm-12">
+			<input type="text" class="form-control" placeholder="Text Search"
+				   ng-model="vm.searchText" />
+		</div>
+		
+		<div id="goals" class="col-sm-12" style="padding-top: 20px;">
+		<div class="alert alert-info" style="padding-bottom: 30px;"
+			 ng-repeat="goal in vm.goals | filter:vm.filterGoal | orderBy:vm.getGoalImportance:true">
+
+			<input type="checkbox" class="col-sm-1"
+				   ng-model="vm.goals[$index].selected"/>
+
+			<div class="col-sm-11">
+				{{ goal.name }}
+			</div>
 		</div>
 	</div>
+	</div>
 
-	<h3>Your day is {{ vm.getDayImportance() }} important</h3>
-	<br />
-	<h3>You day is {{ 100 * (vm.getDayFinishedImportance() / (vm.getDayImportance() || 1)) }}% complete</h3>
+	<div class="col-sm-3">
+		<div>
 
-	<hr />
+			<h3>Your day is {{ vm.getDayImportance() }} important</h3>
+			<br />
+			<h3>You day is {{ 100 * (vm.getDayFinishedImportance() / (vm.getDayImportance() || 1)) }}% complete</h3>
 
-	<div class="col-sm-2 col-lg-2">
+		</div>
+
 		<button type="button" class="btn btn-success"
 				ng-click="vm.markDoneSelectedGoals()">
 			<span class="glyphicon glyphicon-ok"></span>
@@ -30,18 +53,5 @@
 				ng-click="vm.removeSelectedGoals()">
 			<span class="glyphicon glyphicon-remove"></span>
 		</button>
-	</div>
-
-	<div id="goals" class="col-sm-12" style="padding-top: 20px;">
-		<div class="alert alert-info" style="padding-bottom: 30px;"
-			 ng-repeat="goal in vm.goals | filter:vm.isDone">
-
-			<input type="checkbox" class="col-sm-1"
-				   ng-model="vm.goals[$index].selected"/>
-
-			<div class="col-sm-11">
-				{{ goal.name }}
-			</div>
-		</div>
 	</div>
 </div>

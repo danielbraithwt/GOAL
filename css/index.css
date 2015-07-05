@@ -1,0 +1,8 @@
+.goal-add {
+	-webkit-transition: all linear 0.5s;
+	transition: all linear 0.5s;
+}
+
+.goal-add.ng-hide {
+	height: 0px;
+}
