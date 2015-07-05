@@ -1,2 +1,2 @@
 // Create the angular app 'goal'
-angular.module('goal', ['ngRoute'])
+angular.module('goal', ['ngRoute', 'ngResource'])
