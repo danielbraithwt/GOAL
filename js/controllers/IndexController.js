@@ -1,136 +1,90 @@
 (function() {
-    'use strict';
+	'use strict';
 
-    angular
-        .module('goal')
-        .controller('indexController', Controller);
+	angular
+		.module('goal')
+		.controller('indexController', Controller);
 
-    Controller.$inject = ['$scope'];
+	Controller.$inject = ['$scope'];
 
-    /* @ngInject */
-    function Controller($scope){
-        var vm = this;
-		vm.adding = false;
+	/* @ngInject */
+	function Controller($scope){
+		var vm = this;
+		vm.property = 'Controller';
 		
-		vm.searchText = '';
-		
-        vm.property = 'Controller';
-        vm.goalName = '';
-        vm.goalImportance = '';
-        vm.goals = [];
-        vm.addGoal = addGoal;
-        vm.removeSelectedGoals = removeSelectedGoals;
-		vm.markDoneSelectedGoals = markDoneSelectedGoals;
-		
-		// Filtering
-		vm.filterGoal = filterGoal;
-		
-		// Sorting
-		vm.getGoalImportance = getGoalImportance;
-		
-		// Stats
-		vm.getDayImportance = getDayImportance;
-		vm.getDayFinishedImportance = getDayFinishedImportance;
 
-        ////////////////
+		vm.completedPercentage = 20;
+		vm.incompletePercentage = 80;
+		
+		vm.chart = undefined;
+		
+		vm.currentDayGrade = currentDayGrade;
+		
+		activate();
 
-        // Adds a goal to the array of goals
-        function addGoal() {
-			if (vm.adding == false) {
-				vm.adding = true;
-				return;
-			}
+		////////////////
+
+		function activate() {
+			drawGraph();
+		}
+		
+		function drawGraph() {
+			// Calculate the size the canvas can be
+			var canvasContainer = document.getElementById("graph");
+			var width = canvasContainer.offsetWidth;
+			var height = canvasContainer.offsetHeight;
 			
-			// Make sure that there are values in the
-			// fields
-			if (vm.goalName === '' || vm.goalImportance === '') {
-				return;
-			}
+			width = height = Math.min(width, height);
 			
-			// Create a new goal
-            var goal = {};
-            goal.name = vm.goalName;
-            goal.importance = parseInt(vm.goalImportance);
-			goal.selected = false;
-			goal.done = false;
-            
-            // Insert the new goal into goals
-            vm.goals.push(goal);
-            
-            // Reset the form fields
-            vm.goalName = '';
-            vm.goalImportance = '';
+			var canvas = document.getElementById("progress_graph");
+			canvas.height = height;
+			canvas.width = width;
 			
-			vm.adding = false;
-        }
-
-        // Removes the goal at index from the array
-        // of goals
-        function removeSelectedGoals() {
-			for (var i = 0; i < vm.goals.length; i++) {
-				
-				// If the goal is selected 
-            	if (vm.goals[i].selected === true) {
-					vm.goals.splice(i, 1);
+			var data = [
+				{
+					value: vm.incompletePercentage,
+					color:"#F7464A",
+					highlight: "#FF5A5E",
+					label: "Percent Of Tasks Incomplete"
+				}, {
+					value: vm.completedPercentage,
+					color: "#46BFBD",
+					highlight: "#5AD3D1",
+					label: "Percent Of Tasks Complete"
 				}
-			}
-        }
-		
-		// Marks all the selected goals as being
-		// done
-		function markDoneSelectedGoals() {
-			for (var i = 0; i < vm.goals.length; i++) {
-				
-				// If the goal is selected 
-            	if (vm.goals[i].selected === true) {
-					vm.goals[i].done = true;
-					vm.goals[i].selected = false;
-				}
-			}	
-		}
-		
-		// Given a goal object return wether it
-		// is done or not
-		function filterGoal(goal) {
-			if (goal.done === true) {
-				return false;	
-			}
-			
-			if (vm.searchText !== '' && goal.name.toLowerCase().indexOf(vm.searchText.toLowerCase()) === -1) {
-				return false;	
-			}
-			
-			return true;
-		}
-		
-		// Returns a goals importance
-		function getGoalImportance(goal) {
-			return goal.importance;	
-		}
-        
-		// Get the importance of the current day
-        function getDayImportance() {
-            var total = 0;
-			
-			for (var i = 0; i < vm.goals.length; i++) {
-				total += vm.goals[i].importance;
-			}
-			
-			return total;
-        }
-		
-		// Goes through the goals and adds up the
-		// importance of the goals you have finished
-		function getDayFinishedImportance() {
-			var total = 0;
-			
-			for (var i = 0; i < vm.goals.length; i++) {
-				if (vm.goals[i].done) {
-					total += vm.goals[i].importance;
-				}
+			]
+
+			var options = {
+				segmentShowStroke : true,
+				segmentStrokeColor : "#fff",
+				segmentStrokeWidth : 2,
+				percentageInnerCutout : 50,
+				animationSteps : 100,
+				animationEasing : "easeOutBounce",
+				animateRotate : true,
+				animateScale : true
 			}
 
-			return total;
+			
+			vm.chart = new Chart(canvas.getContext("2d")).Pie(data, options);
 		}
-    }
+		
+		function currentDayGrade() {
+			return percentageToGrade(vm.completedPercentage);
+		}
+		
+		function percentageToGrade(grade) {
+			if (grade < 20) {
+				return "F";	
+			} else if (grade < 30) {
+				return "E";	
+			} else if (grade < 40) {
+				return "C-";	
+			} else if (grade < 50) {
+				return "C";	
+			}
+			
+			return "A+";
+		}
+	}
 })();

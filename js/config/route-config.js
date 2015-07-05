@@ -9,5 +9,10 @@ function configuration ($routeProvider) {
             templateUrl: 'pages/index.html',
             controller: 'indexController',
             controllerAs: 'vm'
-        });
+        })
+		.when('/tasks', {
+			templateUrl: 'pages/tasks.html',
+			controller: 'tasksController',
+			controllerAs: 'vm'
+		});
 }
