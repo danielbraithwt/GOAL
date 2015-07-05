@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html ng-app="goal">
+    <head>
+        <title>GOAL!</title>
+
+        <!-- Load the bootstrap css file -->
+        <link rel="stylesheet" href="css/bootstrap.css" />
+
+        <!-- Load all the angular file -->
+        <script src="js/lib/angular/angular.js"></script>
+        <script src="js/lib/angular/angular-route.js"></script>
+
+        <!-- Load our app -->
+        <script src="js/app.js"></script>
+        <script src="js/config/route-config.js"></script>
+        
+        <script src="js/controllers/IndexController.js"></script>
+    </head>
+
+    <body>
+        
+        <div class="container">
+            <div ng-view></div>
+        </div>
+        
+    </body>
+</html>
