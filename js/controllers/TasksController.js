@@ -5,10 +5,10 @@
         .module('goal')
         .controller('tasksController', Controller);
 
-    Controller.$inject = ['$scope'];
+    Controller.$inject = ['$scope', 'tasks'];
 
     /* @ngInject */
-    function Controller($scope){
+    function Controller($scope, tasks){
         var vm = this;
 		vm.adding = false;
 		
@@ -55,7 +55,7 @@
 			goal.done = false;
             
             // Insert the new goal into goals
-            vm.goals.push(goal);
+            vm.goals = tasks.addTask(push(goal));
             
             // Reset the form fields
             vm.goalName = '';

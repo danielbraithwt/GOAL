@@ -4,24 +4,26 @@
 		.module('goal')
 		.factory('tasks', factory);
 
-	factory.$inject = ['$resource', '$cookies'];
+	factory.$inject = ['$resource', '$cookieStore'];
 
 	/* @ngInject */
-	function  Factory($resource, $cookies){
+	function  factory($resource, $cookieStore){
 		var exports = {
 			addTask: addTask,
 			getTasks: getTasks
 		};
 		
 		// Initilise the array of tasks we are storing
-		$cookies.put("TASKS", []);
+		$cookieStore.put("TASKS", []);
 
 		return exports;
 
 		////////////////
 
 		function addTask(task) {
-			var tasks = $cookies.get("TASKS");
+			console.log(task);
+			
+			var tasks = $cookieStore.get("TASKS");
 			tasks.push(task);
 			$cookies.put("TASKS", tasks);
 			
@@ -29,7 +31,7 @@
 		}
 		
 		function getTasks() {
-			return $cookies.get("TASKS");
+			return $cookieStore.get("TASKS");
 		}
 	}
 })();
