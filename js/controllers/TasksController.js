@@ -25,9 +25,6 @@
 		// Filtering
 		vm.filterGoal = filterGoal;
 		
-		// Sorting
-		vm.getGoalImportance = getGoalImportance;
-		
 		// Stats
 		vm.getDayImportance = getDayImportance;
 		vm.getDayFinishedImportance = getDayFinishedImportance;
@@ -101,11 +98,6 @@
 			}
 			
 			return true;
-		}
-		
-		// Returns a goals importance
-		function getGoalImportance(goal) {
-			return goal.importance;	
 		}
         
 		// Get the importance of the current day

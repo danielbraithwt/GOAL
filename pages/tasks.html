@@ -23,7 +23,7 @@
 
 		<div id="goals" class="col-sm-12" style="padding-top: 20px;">
 			<div class="alert alert-info" style="padding-bottom: 30px;"
-				 ng-repeat="goal in vm.goals | filter:vm.filterGoal | orderBy:vm.getGoalImportance:true">
+				 ng-repeat="goal in vm.goals | filter:vm.filterGoal">
 
 				<input type="checkbox" class="col-sm-1"
 					   ng-model="vm.goals[$index].selected"/>

@@ -5,14 +5,13 @@
 		.module('goal')
 		.controller('indexController', Controller);
 
-	Controller.$inject = ['$scope'];
+	Controller.$inject = ['$scope', 'tasks'];
 
 	/* @ngInject */
-	function Controller($scope){
+	function Controller($scope, tasks){
 		var vm = this;
 		vm.property = 'Controller';
 		
-
 		vm.completedPercentage = 20;
 		vm.incompletePercentage = 80;
 		
