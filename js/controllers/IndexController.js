@@ -13,13 +13,21 @@
 		vm.property = 'Controller';
 		
 		vm.tasks = tasks.getTasks();
+		vm.nextTaskIndex = tasks.getMostImportantTask();
 		
-		vm.completedPercentage = 20;
-		vm.incompletePercentage = 80;
+		if (vm.nextTaskIndex !== undefined) {
+			vm.nextTask = vm.tasks[vm.nextTaskIndex];
+		} else {
+			vm.nextTask = undefined;
+		}
+		
+		vm.completedPercentage = 0;
+		vm.incompletePercentage =  0;
 		
 		vm.chart = undefined;
 		
 		vm.currentDayGrade = currentDayGrade;
+		vm.doneNextTask = doneNextTask;
 		
 		activate();
 
@@ -73,6 +81,20 @@
 
 			
 			vm.chart = new Chart(canvas.getContext("2d")).Pie(data, options);
+		}
+		
+		function doneNextTask() {
+			vm.tasks[vm.nextTaskIndex].done = true;
+			vm.tasks = tasks.saveTasks(vm.tasks);
+			
+			vm.nextTaskIndex = tasks.getMostImportantTask();
+			if (vm.nextTaskIndex !== undefined) {
+				vm.nextTask = vm.tasks[vm.nextTaskIndex];
+			} else {
+				vm.nextTask = undefined;	
+			}
+			
+			updateStats();
 		}
 		
 		// Get the importance of the current day

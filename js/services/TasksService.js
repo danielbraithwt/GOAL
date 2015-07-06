@@ -12,6 +12,7 @@
 			addTask: addTask,
 			getTasks: getTasks,
 			saveTasks: saveTasks,
+			getMostImportantTask: getMostImportantTask
 		};
 		
 		// Initilise the array of tasks we are storing
@@ -36,6 +37,16 @@
 		
 		function getTasks() {
 			return $filter('orderBy')($cookies.getObject("TASKS"), getTaskImportance, true);
+		}
+		
+		function getMostImportantTask() {
+			var tasks = getTasks();
+			
+			for (var i = 0; i < tasks.length; i++) {
+				if (tasks[i].done !== true) {
+					return i;
+				}
+			}
 		}
 		
 		// Returns a goals importance, used for sorting the array

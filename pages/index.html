@@ -7,6 +7,21 @@
 			</div>
 			
 		</div>
+		
+		<div id="current_task" class="col-sm-12" ng-hide="vm.nextTask === undefined">
+			Your current task is
+			
+			<div class="panel panel-default">
+				<div class="panel-body">
+					{{ vm.nextTask.name }}
+				</div>
+			</div>
+			
+			<button class="btn btn-success"
+					ng-click="vm.doneNextTask()">
+				DONE!
+			</button>
+		</div>
 	</div>
 	
 	<div id="graph" class="col-sm-6">
