@@ -17,7 +17,7 @@
         vm.property = 'Controller';
         vm.goalName = '';
         vm.goalImportance = '';
-        vm.goals = [];
+        vm.goals = tasks.getTasks();
         vm.addGoal = addGoal;
         vm.removeSelectedGoals = removeSelectedGoals;
 		vm.markDoneSelectedGoals = markDoneSelectedGoals;
@@ -55,7 +55,7 @@
 			goal.done = false;
             
             // Insert the new goal into goals
-            vm.goals = tasks.addTask(push(goal));
+            vm.goals = tasks.addTask(goal);
             
             // Reset the form fields
             vm.goalName = '';
