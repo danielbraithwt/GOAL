@@ -12,6 +12,8 @@
 		var vm = this;
 		vm.property = 'Controller';
 		
+		vm.tasks = tasks.getTasks();
+		
 		vm.completedPercentage = 20;
 		vm.incompletePercentage = 80;
 		
@@ -24,7 +26,12 @@
 		////////////////
 
 		function activate() {
-			drawGraph();
+			updateStats();
+		}
+		
+		function updateStats() {
+			computePercentages();
+			drawGraph();	
 		}
 		
 		function drawGraph() {
@@ -44,12 +51,12 @@
 					value: vm.incompletePercentage,
 					color:"#F7464A",
 					highlight: "#FF5A5E",
-					label: "Percent Of Tasks Incomplete"
+					label: "Tasks Incomplete"
 				}, {
 					value: vm.completedPercentage,
 					color: "#46BFBD",
 					highlight: "#5AD3D1",
-					label: "Percent Of Tasks Complete"
+					label: "Tasks Complete"
 				}
 			]
 
@@ -68,8 +75,42 @@
 			vm.chart = new Chart(canvas.getContext("2d")).Pie(data, options);
 		}
 		
+		// Get the importance of the current day
+		function getDayImportance() {
+			var total = 0;
+
+			for (var i = 0; i < vm.tasks.length; i++) {
+				total += vm.tasks[i].importance;
+			}
+
+			return total;
+		}
+
+		// Goes through the goals and adds up the
+		// importance of the goals you have finished
+		function getDayFinishedImportance() {
+			var total = 0;
+
+			for (var i = 0; i < vm.tasks.length; i++) {
+				if (vm.tasks[i].done) {
+					total += vm.tasks[i].importance;
+				}
+			}
+
+			return total;
+		}
+		
+		function computePercentages() {
+			vm.completedPercentage = 100 * (getDayFinishedImportance() / (getDayImportance() || 1));
+			vm.incompletePercentage = 100 - vm.completedPercentage;
+		}
+		
 		function currentDayGrade() {
-			return percentageToGrade(vm.completedPercentage);
+			if (vm.tasks.length == 0) {
+				return "A+";	
+			}
+			
+			return percentageToGrade(getDayFinishedImportance() / (getDayImportance() || 1));
 		}
 		
 		function percentageToGrade(grade) {

@@ -84,6 +84,8 @@
 					vm.goals[i].selected = false;
 				}
 			}	
+			
+			vm.goals = tasks.saveTasks(vm.goals);
 		}
 		
 		// Given a goal object return wether it

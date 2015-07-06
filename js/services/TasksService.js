@@ -10,7 +10,8 @@
 	function  factory($resource, $cookies, $filter){
 		var exports = {
 			addTask: addTask,
-			getTasks: getTasks
+			getTasks: getTasks,
+			saveTasks: saveTasks,
 		};
 		
 		// Initilise the array of tasks we are storing
