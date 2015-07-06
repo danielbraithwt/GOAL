@@ -6,3 +6,11 @@
 .goal-add.ng-hide {
 	height: 0px;
 }
+
+.goal {
+	padding: 10px;
+	
+	font-size: 20px;
+	font-weight: bold;
+	color: darkgray;
+}
