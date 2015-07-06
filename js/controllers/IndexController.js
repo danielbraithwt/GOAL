@@ -106,11 +106,7 @@
 		}
 		
 		function currentDayGrade() {
-			if (vm.tasks.length == 0) {
-				return "A+";	
-			}
-			
-			return percentageToGrade(getDayFinishedImportance() / (getDayImportance() || 1));
+			return percentageToGrade(vm.completedPercentage);
 		}
 		
 		function percentageToGrade(grade) {
