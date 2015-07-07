@@ -6,7 +6,7 @@ configuration.$inject = ['$routeProvider'];
 function configuration ($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'pages/index.html',
+            templateUrl: 'pages/overview.html',
             controller: 'indexController',
             controllerAs: 'vm'
         })
