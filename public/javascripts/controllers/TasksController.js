@@ -46,7 +46,7 @@
 			
 			// Create a new goal
             var goal = {};
-            goal.name = vm.goalName;
+            goal.task = vm.goalName;
             goal.importance = parseInt(vm.goalImportance);
 			goal.selected = false;
 			goal.done = false;
