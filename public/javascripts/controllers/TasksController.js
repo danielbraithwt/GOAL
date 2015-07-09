@@ -52,7 +52,8 @@
 			goal.done = false;
             
             // Insert the new goal into goals
-            vm.goals = tasks.addTask(goal);
+            tasks.addTask(goal);
+			vm.goals.push(goal);
             
             // Reset the form fields
             vm.goalName = '';
@@ -84,10 +85,12 @@
             	if (vm.goals[i].selected === true) {
 					vm.goals[i].done = true;
 					vm.goals[i].selected = false;
+					
+					tasks.updateTask(vm.goals[i]);
 				}
 			}	
 			
-			vm.goals = tasks.saveTasks(vm.goals);
+			//vm.goals = tasks.saveTasks(vm.goals);
 		}
 		
 		// Given a goal object return wether it

@@ -13,6 +13,7 @@
 			getTasks: getTasks,
 			saveTasks: saveTasks,
 			removeTask: removeTask,
+			updateTask: updateTask,
 			getMostImportantTask: getMostImportantTask
 		};
 		

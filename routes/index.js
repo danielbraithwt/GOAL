@@ -25,10 +25,7 @@ router.get('/tasks', function(req, res, next) {
 	
 // Route to create a new task
 router.post('/tasks', function(req, res, next) {
-	console.log(req.body);
 	var task = new Task(req.body);
-	
-	console.log(task);
 	
 	task.save(function(err, task) {
 		if (err) {
@@ -62,7 +59,6 @@ router.get('/tasks/:task', function(req, res) {
 });
 
 router.delete('/tasks/:task', function(req, res, next) {
-	console.log(req.params.task);
 	Task.findById(req.params.task, function(err, task) {
 		if (err) {
 			return next(err);	
@@ -79,7 +75,7 @@ router.delete('/tasks/:task', function(req, res, next) {
 });
 
 router.put('/tasks/:task', function(req, res, next) {
-	Task.findById(req.query.id, function(err, task) {
+	Task.findById(req.params.task, function(err, task) {
 		if (err) {
 			return next(err);	
 		}
