@@ -23,6 +23,8 @@
 		vm.currentDayGrade = currentDayGrade;
 		vm.doneNextTask = doneNextTask;
 		
+		vm.resetTasks = resetTasks;
+		
 		tasks.getTasks();
 		
 		//activate();
@@ -132,6 +134,13 @@
 			}
 
 			return total;
+		}
+		
+		// Removes all the tasks from the database
+		function resetTasks() {
+			for (var i = 0; i < vm.tasks.length; i++) {
+				tasks.removeTask(vm.tasks[i]);	
+			}
 		}
 		
 		function computePercentages() {

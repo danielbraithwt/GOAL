@@ -27,9 +27,14 @@
 			<div class="col-sm-12" ng-show="vm.nextTask === undefined">
 				<div class="panel panel-default">
 					<div class="panel-body">
-						You have completed all your tasks for the day! :D
+						You have completed all your tasks for the day! :D. Reset for a fresh start tomorow! 
 					</div>
 				</div>
+
+				<button class="btn btn-danger"
+						ng-click="vm.resetTasks()">
+					Reset!
+				</button>
 			</div>
 		</div>
 
