@@ -1,52 +1,55 @@
-<div style="margin-top: 20px;">
-	<div class="col-sm-9">
-		<div id="goal_creator" class="col-sm-12 goal-add"
-			 ng-show="vm.adding">
-			<div class="input-group input-group-lg">
-				<input type="text" class="form-control" placeholder="Goal" 
-					   ng-model="vm.goalName" />
+<div ng-hide="vm.goals === undefined">
+	<div style="margin-top: 20px;">
+		<div class="col-sm-9">
+			<div id="goal_creator" class="col-sm-12 goal-add"
+				 ng-show="vm.adding">
+				<div class="input-group input-group-lg">
+					<input type="text" class="form-control" placeholder="Goal" 
+						   ng-model="vm.goalName" />
 
-				<input type="number" class="form-control" placeholder="Importance out of 10"
-					   ng-model="vm.goalImportance" />
+					<input type="number" class="form-control" placeholder="Importance out of 10"
+						   ng-model="vm.goalImportance" />
+				</div>
 			</div>
-		</div>
 
-		<button type="button" class="btn btn-primary col-sm-10 col-sm-offset-1" style="margin-top: 20px; margin-bottom:20px;" 
-				ng-click="vm.addGoal()">
-			<span class="glyphicon glyphicon-plus"></span>
-		</button>
+			<button type="button" class="btn btn-primary col-sm-10 col-sm-offset-1" style="margin-top: 20px; margin-bottom:20px;" 
+					ng-click="vm.addGoal()">
+				<span class="glyphicon glyphicon-plus"></span>
+			</button>
 
-		<div id="search" class="col-sm-12">
-			<input type="text" class="form-control" placeholder="Text Search"
-				   ng-model="vm.searchText" />
-		</div>
+			<div id="search" class="col-sm-12">
+				<input type="text" class="form-control" placeholder="Text Search"
+					   ng-model="vm.searchText" />
+			</div>
 
-		<div id="goals" class="col-sm-12" style="padding-top: 20px;">
-			<div class="panel goal" 
-				 ng-repeat="goal in vm.goals | filter:vm.filterGoal" ng-click="vm.goals[$index].selected = !vm.goals[$index].selected"
-				 ng-class="{'panel-default': !vm.goals[$index].selected, 'panel-success': vm.goals[$index].selected}">
+			<div id="goals" class="col-sm-12" style="padding-top: 20px;">
+				<div class="panel goal" 
+					 ng-repeat="goal in vm.goals | filter:vm.filterGoal" ng-click="vm.goals[$index].selected = !vm.goals[$index].selected"
+					 ng-class="{'panel-default': !vm.goals[$index].selected, 'panel-success': vm.goals[$index].selected}">
 					{{ goal.task }}
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="col-sm-3">
-		<div>
+		<div class="col-sm-3">
+			<div>
 
-			<h3>Your day is {{ vm.getDayImportance() }} important</h3>
-			<br />
-			<h3>You day is {{ 100 * (vm.getDayFinishedImportance() / (vm.getDayImportance() || 1)) }}% complete</h3>
+				<h3>Your day is {{ vm.getDayImportance() }} important</h3>
+				<br />
+				<h3>You day is {{ 100 * (vm.getDayFinishedImportance() / (vm.getDayImportance() || 1)) }}% complete</h3>
 
+			</div>
+
+			<button type="button" class="btn btn-success"
+					ng-click="vm.markDoneSelectedGoals()">
+				<span class="glyphicon glyphicon-ok"></span>
+			</button>
+
+			<button type="button" class="btn btn-danger"
+					ng-click="vm.removeSelectedGoals()">
+				<span class="glyphicon glyphicon-remove"></span>
+			</button>
 		</div>
-
-		<button type="button" class="btn btn-success"
-				ng-click="vm.markDoneSelectedGoals()">
-			<span class="glyphicon glyphicon-ok"></span>
-		</button>
-
-		<button type="button" class="btn btn-danger"
-				ng-click="vm.removeSelectedGoals()">
-			<span class="glyphicon glyphicon-remove"></span>
-		</button>
 	</div>
+
 </div>

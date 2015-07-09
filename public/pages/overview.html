@@ -1,34 +1,45 @@
-<div class="col-sm-12" ng-hide="vm.tasks.length == 0">
-	<div id="information" class="col-sm-6">
-		<div id="grade_information" class="col-sm-12">
-			Your Current Grade IS<br>
-			<div id="grade">
-				{{vm.currentDayGrade()}}
+<div ng-hide="vm.tasks === undefined">
+	<div class="col-sm-12" ng-hide="vm.tasks.length == 0">
+		<div id="information" class="col-sm-6">
+			<div id="grade_information" class="col-sm-12">
+				Your Current Grade IS<br>
+				<div id="grade">
+					{{vm.currentDayGrade()}}
+				</div>
+
 			</div>
-			
-		</div>
-		
-		<div id="current_task" class="col-sm-12" ng-hide="vm.nextTask === undefined">
-			Your current task is
-			
-			<div class="panel panel-default">
-				<div class="panel-body">
-					{{ vm.nextTask.task }}
+
+			<div id="current_task" class="col-sm-12" ng-hide="vm.nextTask === undefined">
+				Your current task is
+
+				<div class="panel panel-default">
+					<div class="panel-body">
+						{{ vm.nextTask.task }}
+					</div>
+				</div>
+
+				<button class="btn btn-success"
+						ng-click="vm.doneNextTask()">
+					DONE!
+				</button>
+			</div>
+
+			<div class="col-sm-12" ng-show="vm.nextTask === undefined">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						You have completed all your tasks for the day! :D
+					</div>
 				</div>
 			</div>
-			
-			<button class="btn btn-success"
-					ng-click="vm.doneNextTask()">
-				DONE!
-			</button>
+		</div>
+
+		<div id="graph" class="col-sm-6">
+			<canvas id="progress_graph" width="400" height="400"></canvas>
 		</div>
 	</div>
-	
-	<div id="graph" class="col-sm-6">
-		<canvas id="progress_graph" width="400" height="400"></canvas>
-	</div>
-</div>
 
-<div class="col-sm-12" ng-show="vm.tasks.length == 0">
-	You currently have no tasks for the day
+	<div class="col-sm-12" ng-show="vm.tasks.length == 0">
+		You currently have no tasks for the day
+	</div>
+
 </div>

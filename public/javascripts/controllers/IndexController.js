@@ -5,21 +5,15 @@
 		.module('goal')
 		.controller('indexController', Controller);
 
-	Controller.$inject = ['$scope', 'tasks'];
+	Controller.$inject = ['$scope', '$timeout', 'tasks'];
 
 	/* @ngInject */
-	function Controller($scope, tasks){
+	function Controller($scope, $timeout, tasks){
 		var vm = this;
 		vm.property = 'Controller';
 		
-		vm.tasks = tasks.getTasks();
-		vm.nextTaskIndex = tasks.getMostImportantTask();
-		
-		if (vm.nextTaskIndex !== undefined) {
-			vm.nextTask = vm.tasks[vm.nextTaskIndex];
-		} else {
-			vm.nextTask = undefined;
-		}
+		vm.tasks = undefined;
+		vm.nextTaskIndex = undefined;
 		
 		vm.completedPercentage = 0;
 		vm.incompletePercentage =  0;
@@ -29,13 +23,23 @@
 		vm.currentDayGrade = currentDayGrade;
 		vm.doneNextTask = doneNextTask;
 		
-		activate();
+		tasks.getTasks();
+		
+		//activate();
 
 		////////////////
-
-		function activate() {
-			updateStats();
-		}
+		
+		$scope.$on("tasksReady", function(e, tasks) {
+			vm.tasks = tasks;
+			
+			$timeout( function() {
+				if (vm.nextTaskIndex === undefined) {
+					getNextTask();	
+				}
+							
+				updateStats();
+			});
+		});
 		
 		function updateStats() {
 			computePercentages();
@@ -48,7 +52,7 @@
 			var width = canvasContainer.offsetWidth;
 			var height = canvasContainer.offsetHeight;
 			
-			width = height = Math.min(width, height);
+			width = height = 400;
 			
 			var canvas = document.getElementById("progress_graph");
 			canvas.height = height;
@@ -85,16 +89,24 @@
 		
 		function doneNextTask() {
 			vm.tasks[vm.nextTaskIndex].done = true;
-			vm.tasks = tasks.saveTasks(vm.tasks);
+			tasks.updateTask(vm.tasks[vm.nextTaskIndex]);
 			
+			getNextTask();
+			
+			//tasks.getTasks().success(function(data) {
+			//	vm.tasks = data;
+			//});
+			
+			updateStats();
+		}
+		
+		function getNextTask() {
 			vm.nextTaskIndex = tasks.getMostImportantTask();
 			if (vm.nextTaskIndex !== undefined) {
 				vm.nextTask = vm.tasks[vm.nextTaskIndex];
 			} else {
 				vm.nextTask = undefined;	
-			}
-			
-			updateStats();
+			}	
 		}
 		
 		// Get the importance of the current day

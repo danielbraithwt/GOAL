@@ -4,66 +4,60 @@
 		.module('goal')
 		.factory('tasks', factory);
 
-	factory.$inject = ['$resource', '$cookies', '$http', '$filter'];
+	factory.$inject = ['$resource', '$rootScope', '$http', '$filter'];
 
 	/* @ngInject */
-	function  factory($resource, $cookies, $http, $filter){
+	function  factory($resource, $rootScope, $http, $filter){
 		var exports = {
 			addTask: addTask,
-			getTasks: getTasks,
-			saveTasks: saveTasks,
 			removeTask: removeTask,
 			updateTask: updateTask,
-			getMostImportantTask: getMostImportantTask
+			getTasks: getTasks,
+			getMostImportantTask: getMostImportantTask,
 		};
 		
 		// Initilise the array of tasks we are storing
-		var tasks = getTasksFromDB();
-		//$cookies.putObject("TASKS", tasks);
-
+		var tasks = undefined;
+		//$http.get('/tasks').success(function(data) {
+			//$filter('orderBy')(data, getTaskImportance, true);
+		//	tasks = data;		
+		//});
+		
+		getTasksFromDB();
+		
 		return exports;
 
 		////////////////
-
+		
 		function addTask(task) {
-			//var tasks = $cookies.getObject("TASKS");
 			$http.post('/tasks', task).success(function(data) {
 				tasks.push(data);	
 				
-				console.log(tasks);
+				emitTasksReady();
 			});
-			//tasks.push(task);
-			//$cookies.putObject("TASKS", tasks);
-			
-			return getTasks();
 		}
 		
 		function removeTask(task) {
-			console.log(task._id);
 			$http.delete('/tasks/' + task._id, task).success(function(data) {
-				tasks = getTasksFromDB();
+				getTasksFromDB();
 			});
 		}
 		
 		function updateTask(task) {
 			$http.put('/tasks/' + task._id, task).success(function(data) {
-				tasks = getTasksFromDB();
+				getTasksFromDB();
 			});
 		}
 		
-		function saveTasks(tasks) {
-			//$cookies.putObject("TASKS", tasks);
-			
-			
-			return getTasks();
+		function getTasks() {
+			getTasksFromDB();
 		}
 		
-		function getTasks() {
-			return $filter('orderBy')(tasks, getTaskImportance, true);
+		function emitTasksReady() {
+			$rootScope.$broadcast("tasksReady", tasks);
 		}
 		
 		function getMostImportantTask() {
-			var tasks = getTasks();
 			
 			for (var i = 0; i < tasks.length; i++) {
 				if (tasks[i].done !== true) {
@@ -79,13 +73,10 @@
 		}
 		
 		function getTasksFromDB() {
-			var t = [];
-			
 			$http.get('/tasks').success(function(data) {
-				angular.copy(data, t);
+				tasks = $filter('orderBy')(data, getTaskImportance, true);;
+				emitTasksReady();
 			});
-			
-			return t;
 		}
 	}
 })();

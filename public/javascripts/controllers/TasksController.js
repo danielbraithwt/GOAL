@@ -17,7 +17,7 @@
         vm.property = 'Controller';
         vm.goalName = '';
         vm.goalImportance = '';
-        vm.goals = tasks.getTasks();
+        vm.goals = undefined;//= tasks.getTasks();
         vm.addGoal = addGoal;
         vm.removeSelectedGoals = removeSelectedGoals;
 		vm.markDoneSelectedGoals = markDoneSelectedGoals;
@@ -29,7 +29,13 @@
 		vm.getDayImportance = getDayImportance;
 		vm.getDayFinishedImportance = getDayFinishedImportance;
 
+		tasks.getTasks();
+		
         ////////////////
+		
+		$scope.$on("tasksReady", function(e, tasks) {
+			vm.goals = tasks;	
+		});
 
         // Adds a goal to the array of goals
         function addGoal() {
@@ -70,7 +76,6 @@
 				// If the goal is selected 
             	if (vm.goals[i].selected === true) {
 					var task = vm.goals.splice(i, 1);
-					console.log(task);
 					tasks.removeTask(task[0]);
 				}
 			}
@@ -109,6 +114,10 @@
         
 		// Get the importance of the current day
         function getDayImportance() {
+			if (vm.goals === undefined) {
+				return;
+			}
+			
             var total = 0;
 			
 			for (var i = 0; i < vm.goals.length; i++) {
@@ -121,6 +130,10 @@
 		// Goes through the goals and adds up the
 		// importance of the goals you have finished
 		function getDayFinishedImportance() {
+			if (vm.goals === undefined) {
+				return;
+			}
+			
 			var total = 0;
 			
 			for (var i = 0; i < vm.goals.length; i++) {
