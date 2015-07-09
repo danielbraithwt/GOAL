@@ -68,7 +68,9 @@
 				
 				// If the goal is selected 
             	if (vm.goals[i].selected === true) {
-					vm.goals.splice(i, 1);
+					var task = vm.goals.splice(i, 1);
+					console.log(task);
+					tasks.removeTask(task[0]);
 				}
 			}
         }

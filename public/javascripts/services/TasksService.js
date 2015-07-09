@@ -12,6 +12,7 @@
 			addTask: addTask,
 			getTasks: getTasks,
 			saveTasks: saveTasks,
+			removeTask: removeTask,
 			getMostImportantTask: getMostImportantTask
 		};
 		
@@ -36,8 +37,23 @@
 			return getTasks();
 		}
 		
+		function removeTask(task) {
+			console.log(task._id);
+			$http.delete('/tasks/' + task._id, task).success(function(data) {
+				tasks = getTasksFromDB();
+			});
+		}
+		
+		function updateTask(task) {
+			$http.put('/tasks/' + task._id, task).success(function(data) {
+				tasks = getTasksFromDB();
+			});
+		}
+		
 		function saveTasks(tasks) {
-			$cookies.putObject("TASKS", tasks);
+			//$cookies.putObject("TASKS", tasks);
+			
+			
 			return getTasks();
 		}
 		

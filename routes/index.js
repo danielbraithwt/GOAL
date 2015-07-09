@@ -57,8 +57,43 @@ router.param('post', function(req, res, next, id) {
 	});
 });
 
-router.get('/task/:task', function(req, res) {
-	res.json(req.post);
+router.get('/tasks/:task', function(req, res) {
+	res.json(req.task);
+});
+
+router.delete('/tasks/:task', function(req, res, next) {
+	console.log(req.params.task);
+	Task.findById(req.params.task, function(err, task) {
+		if (err) {
+			return next(err);	
+		}
+		
+		task.remove(function(err) {
+			if (err) {
+				return next(err);	
+			}
+			
+			res.sendStatus(204);
+		});
+	});
+});
+
+router.put('/tasks/:task', function(req, res, next) {
+	Task.findById(req.query.id, function(err, task) {
+		if (err) {
+			return next(err);	
+		}
+		
+		task.done = req.body.done;
+		
+		task.save(function(err) {
+			if (err) {
+				return next(err);	
+			}
+			
+			res.json(task);
+		});
+	});
 });
 
 module.exports = router;
