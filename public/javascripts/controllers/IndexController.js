@@ -35,10 +35,11 @@
 			vm.tasks = tasks;
 			
 			$timeout( function() {
-				if (vm.nextTaskIndex === undefined) {
-					getNextTask();	
-				}
-							
+//				if (vm.nextTaskIndex === undefined) {
+//					getNextTask();	
+//				}
+				
+				getNextTask();
 				updateStats();
 			});
 		});

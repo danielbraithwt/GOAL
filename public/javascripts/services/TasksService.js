@@ -16,6 +16,16 @@
 			getMostImportantTask: getMostImportantTask,
 		};
 		
+		// Create a socket to the webserver
+		var socket = io('http://localhost:3000');
+		
+		// When the update event is recived then update the data
+		// on the webpage from the database
+		socket.on('update', function(data) {
+			console.log("Recived 'update', Updating data")
+			getTasksFromDB();
+		});
+		
 		// Initilise the array of tasks we are storing
 		var tasks = undefined;
 		//$http.get('/tasks').success(function(data) {
@@ -32,19 +42,21 @@
 		function addTask(task) {
 			$http.post('/tasks', task).success(function(data) {
 				tasks.push(data);	
-				
+				socket.emit("updated");
 				emitTasksReady();
 			});
 		}
 		
 		function removeTask(task) {
 			$http.delete('/tasks/' + task._id, task).success(function(data) {
+				socket.emit("updated");
 				getTasksFromDB();
 			});
 		}
 		
 		function updateTask(task) {
 			$http.put('/tasks/' + task._id, task).success(function(data) {
+				socket.emit("updated");
 				getTasksFromDB();
 			});
 		}
