@@ -35,9 +35,9 @@
 			vm.tasks = tasks;
 			
 			$timeout( function() {
-//				if (vm.nextTaskIndex === undefined) {
-//					getNextTask();	
-//				}
+				if (vm.tasks.length == 0) {
+					return;
+				}
 				
 				getNextTask();
 				updateStats();
