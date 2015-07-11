@@ -24,8 +24,8 @@
 
 			<div id="goals" class="col-sm-12" style="padding-top: 20px;">
 				<div class="panel goal" 
-					 ng-repeat="goal in vm.goals | filter:vm.filterGoal" ng-click="vm.goals[$index].selected = !vm.goals[$index].selected"
-					 ng-class="{'panel-default': !vm.goals[$index].selected, 'panel-success': vm.goals[$index].selected}">
+					 ng-repeat="goal in vm.goals | filter:vm.filterGoal" ng-click="goal.selected = !goal.selected"
+					 ng-class="{'panel-default': !goal.selected, 'panel-success': goal.selected}">
 					{{ goal.task }}
 				</div>
 			</div>
