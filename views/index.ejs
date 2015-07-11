@@ -28,18 +28,29 @@
         <script src="/javascripts/config/route-config.js"></script>
         
 		<script src="/javascripts/services/TasksService.js"></script>
+		<script src="/javascripts/services/AuthenticationService.js"></script>
 		
         <script src="/javascripts/controllers/IndexController.js"></script>
 		<script src="/javascripts/controllers/TasksController.js"></script>
+		<script src="/javascripts/controllers/AuthController.js"></script>
+		<script src="/javascripts/controllers/OverviewController.js"></script>
+		<script src="/javascripts/controllers/HeaderController.js"></script>
     </head>
 
     <body>
-        <nav class="navbar navbar-defualt">
+        <nav class="navbar navbar-defualt"
+			 ng-controller="headerController as vm">
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="#/">Overview</a></li>
-					<li><a href="#/tasks">Tasks</a></li>
+					<li><a href="#/overview"
+						   ng-show="vm.isLoggedIn()">Overview</a></li>
+					<li><a href="#/tasks"
+						   ng-show="vm.isLoggedIn()">Tasks</a></li>
+					<li><a ng-click="vm.logout()" ng-show="vm.isLoggedIn()">Logout</a></li>
 				</ul>
+				
+				<p class="navbar-text navbar-right"
+				   ng-show="vm.currentUser() !== undefined">Signed in as {{vm.currentUser()}}</p>
 			</div>
 		</nav>
 		

@@ -3,7 +3,7 @@
 
 	angular
 		.module('goal')
-		.controller('indexController', Controller);
+		.controller('headerController', Controller);
 
 	Controller.$inject = ['$location', 'auth'];
 
@@ -12,16 +12,17 @@
 		var vm = this;
 		vm.property = 'Controller';
 		
-
-		activate();
+		vm.logout = logout();
+		
+		vm.currentUser = auth.currentUser;
+		
+		vm.isLoggedIn = auth.isLoggedIn;
 
 		////////////////
-
-		function activate() {
-			if (auth.isLoggedIn()) {
-				$location.path('/overview');
-			}
-			
+		
+		function logout() {
+			auth.logout();
+			$location.path('/');
 		}
 	}
 })();

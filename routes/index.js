@@ -1,8 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
+var jwt = require('express-jwt');
+var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
+
+var passport = require('passport');
+
 var mongoose = require('mongoose');
 var Task = mongoose.model('Task');
+var User = mongoose.model('User');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -13,7 +19,7 @@ router.get('/', function(req, res) {
 /////////////////
 
 // Route to get all the tasks
-router.get('/tasks', function(req, res, next) {
+router.get('/tasks', auth, function(req, res, next) {
 	Task.find(function(err, tasks) {
 		if (err) {
 			return next(err);	
@@ -24,7 +30,7 @@ router.get('/tasks', function(req, res, next) {
 });
 
 // Route to create a new task
-router.post('/tasks', function(req, res, next) {
+router.post('/tasks', auth, function(req, res, next) {
 	var task = new Task(req.body);
 
 	task.save(function(err, task) {
@@ -54,11 +60,11 @@ router.param('post', function(req, res, next, id) {
 	});
 });
 
-router.get('/tasks/:task', function(req, res) {
+router.get('/tasks/:task', auth, function(req, res) {
 	res.json(req.task);
 });
 
-router.delete('/tasks/:task', function(req, res, next) {
+router.delete('/tasks/:task', auth, function(req, res, next) {
 	Task.findById(req.params.task, function(err, task) {
 		if (err) {
 			return next(err);	
@@ -74,7 +80,7 @@ router.delete('/tasks/:task', function(req, res, next) {
 	});
 });
 
-router.put('/tasks/:task', function(req, res, next) {
+router.put('/tasks/:task', auth, function(req, res, next) {
 	Task.findById(req.params.task, function(err, task) {
 		if (err) {
 			return next(err);	
@@ -90,6 +96,45 @@ router.put('/tasks/:task', function(req, res, next) {
 			res.json(task);
 		});
 	});
+});
+
+router.post('/register', function(req, res, next) {
+	if (!req.body.username || !req.body.password) {
+		return res.status(400).json({message: 'Please fill out all the fields'});	
+	}
+	
+	var user = new User();
+	
+	console.log(req.body);
+	
+	user.username = req.body.username;
+	user.setPassword(req.body.password);
+	
+	user.save(function(err) {
+		if (err) {
+			return next(err);	
+		}
+		
+		return res.json({token: user.generateJWT()});
+	});
+});
+
+router.post('/login', function(req, res, next) {
+	if (!req.body.username || !req.body.password) {
+		return res.status(400).json({message: 'Please fill out all the fields'});	
+	}
+	
+	passport.authenticate('local', function(err, user, info) {
+		if (err) {
+			return next(err);	
+		}
+		
+		if (user) {
+			return res.json({token: user.generateJWT()});	
+		} else {
+			return res.status(401).json(info);
+		}
+	})(req, res, next);
 });
 
 module.exports = router;

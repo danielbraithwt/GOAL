@@ -4,10 +4,10 @@
 		.module('goal')
 		.factory('tasks', factory);
 
-	factory.$inject = ['$resource', '$rootScope', '$http', '$filter'];
+	factory.$inject = ['$resource', '$rootScope', '$http', '$filter', 'auth'];
 
 	/* @ngInject */
-	function  factory($resource, $rootScope, $http, $filter){
+	function  factory($resource, $rootScope, $http, $filter, auth){
 		var exports = {
 			addTask: addTask,
 			removeTask: removeTask,
@@ -40,7 +40,7 @@
 		////////////////
 		
 		function addTask(task) {
-			$http.post('/tasks', task).success(function(data) {
+			$http.post('/tasks', task, {headers: {Authorization: 'Bearer ' + auth.getToken()}}).success(function(data) {
 				tasks.push(data);	
 				socket.emit("updated");
 				emitTasksReady();
@@ -48,14 +48,14 @@
 		}
 		
 		function removeTask(task) {
-			$http.delete('/tasks/' + task._id, task).success(function(data) {
+			$http.delete('/tasks/' + task._id, task, {headers: {Authorization: 'Bearer ' + auth.getToken()}}).success(function(data) {
 				socket.emit("updated");
 				getTasksFromDB();
 			});
 		}
 		
 		function updateTask(task) {
-			$http.put('/tasks/' + task._id, task).success(function(data) {
+			$http.put('/tasks/' + task._id, task, {headers: {Authorization: 'Bearer ' + auth.getToken()}}).success(function(data) {
 				socket.emit("updated");
 				getTasksFromDB();
 			});
@@ -85,7 +85,7 @@
 		}
 		
 		function getTasksFromDB() {
-			$http.get('/tasks').success(function(data) {
+			$http.get('/tasks', {headers: {Authorization: 'Bearer ' + auth.getToken()}}).success(function(data) {
 				tasks = $filter('orderBy')(data, getTaskImportance, true);;
 				emitTasksReady();
 			});
