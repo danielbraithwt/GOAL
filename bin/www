@@ -29,15 +29,62 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+var usersToSockets = {};
+var socketsToUser = {};
+
 // Create the socket io connection
 var io = require('socket.io')(server);
 
 io.on('connection', function(socket) {
 	console.log("User Connected");
 	
+	// When a user logs in, keep a recod of who they logged in as
+	socket.on('loggedin', function(data) {
+		if (usersToSockets[data.username] === undefined) {
+			usersToSockets[data.username] = [];
+		}
+		
+		usersToSockets[data.username].push(socket.id);
+		console.log(usersToSockets[data.username]);
+		socketsToUser[socket.id] = data.username;
+	});
+			  
+	// When the user logs out then we want to remove them from the list
+	// of users
+	socket.on('loggedout', function() {
+		var username = socketsToUser[socket.id];
+		if (username === undefined) {
+			return;
+		}
+		
+		socketsToUser[socket.id] = undefined;		usersToSockets[username].splice(usersToSockets[username].indexOf(socket.id), 1);
+	
+	});
+	
+	
 	socket.on('updated', function(data) {
-		console.log("User updated data, emitting 'update'");
-		io.sockets.emit('update');
+		var users = usersToSockets[data.username];
+		if (users.lenght != 0) {
+			for (var i = 0; i < users.length; i++) {
+				io.to(users[i]).emit('update');
+			}
+		}
+		
+		//io.sockets.emit('update');
+	});
+	
+	
+	// When a user disconnects we want to remove them from the users list
+	socket.on('disconnect', function() {
+		var username = socketsToUser[socket.id];
+		if (username === undefined) {
+			return;
+		}
+		
+		console.log(usersToSockets[username]);
+		socketsToUser[socket.id] = undefined;
+		
+		usersToSockets[username].splice(usersToSockets[username].indexOf(socket.id), 1);
 	});
 });
 

@@ -4,10 +4,10 @@
 		.module('goal')
 		.factory('auth', factory);
 
-	factory.$inject = ['$http', '$window'];
+	factory.$inject = ['$http', '$window', 'socketio'];
 
 	/* @ngInject */
-	function factory($http, $window){
+	function factory($http, $window, socketio){
 		var exports = {
 			isLoggedIn: isLoggedIn,
 			currentUser: currentUser,
@@ -54,18 +54,20 @@
 		function register(user) {
 			return $http.post('/register', user).success(function(data) {
 				saveToken(data, data.token);
+				socketio.emit('loggedin', user);
 			});
 		}
 		
 		function login(user) {
 			return $http.post('/login', user).success(function(data) {
-					console.log(data.token);
-					saveToken(data.token);
+				saveToken(data.token);
+				socketio.emit('loggedin', user);
 			});
 		}
 		
 		function logout() {
 			$window.localStorage.removeItem('goal-token');	
+			socketio.emit('loggedout');
 		}
 	}
 })();

@@ -4,10 +4,10 @@
 		.module('goal')
 		.factory('tasks', factory);
 
-	factory.$inject = ['$resource', '$rootScope', '$http', '$filter', 'auth'];
+	factory.$inject = ['$resource', '$rootScope', '$http', '$filter', 'auth', 'socketio'];
 
 	/* @ngInject */
-	function  factory($resource, $rootScope, $http, $filter, auth){
+	function  factory($resource, $rootScope, $http, $filter, auth, socketio){
 		var exports = {
 			addTask: addTask,
 			removeTask: removeTask,
@@ -16,15 +16,18 @@
 			getMostImportantTask: getMostImportantTask,
 		};
 		
-		// Create a socket to the webserver
-		var socket = io('http://localhost:3000');
+		
 		
 		// When the update event is recived then update the data
 		// on the webpage from the database
-		socket.on('update', function(data) {
+		socketio.on('update', function(data) {
 			console.log("Recived 'update', Updating data")
 			getTasksFromDB();
 		});
+//		socket.on('update', function(data) {
+//			console.log("Recived 'update', Updating data")
+//			getTasksFromDB();
+//		});
 		
 		// Initilise the array of tasks we are storing
 		var tasks = undefined;
@@ -42,21 +45,22 @@
 		function addTask(task) {
 			$http.post('/tasks', task, {headers: {Authorization: 'Bearer ' + auth.getToken()}}).success(function(data) {
 				tasks.push(data);	
-				socket.emit("updated");
+				emitUpdated();
 				emitTasksReady();
 			});
 		}
 		
 		function removeTask(task) {
-			$http.delete('/tasks/' + task._id, task, {headers: {Authorization: 'Bearer ' + auth.getToken()}}).success(function(data) {
-				socket.emit("updated");
+			console.log(auth.getToken());
+			$http.delete('/tasks/' + task._id, {headers: {Authorization: 'Bearer ' + auth.getToken()}, data: task._id}).success(function(data) {
+				emitUpdated();
 				getTasksFromDB();
 			});
 		}
 		
 		function updateTask(task) {
 			$http.put('/tasks/' + task._id, task, {headers: {Authorization: 'Bearer ' + auth.getToken()}}).success(function(data) {
-				socket.emit("updated");
+				emitUpdated();
 				getTasksFromDB();
 			});
 		}
@@ -67,6 +71,10 @@
 		
 		function emitTasksReady() {
 			$rootScope.$broadcast("tasksReady", tasks);
+		}
+		
+		function emitUpdated() {
+			socketio.emit("updated", {username: auth.currentUser()});
 		}
 		
 		function getMostImportantTask() {
