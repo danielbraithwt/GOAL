@@ -20,8 +20,10 @@ router.get('/', function(req, res) {
 
 // Route to get all the tasks
 router.get('/tasks', auth, function(req, res, next) {
-	Task.find(function(err, tasks) {
+	console.log(req.payload._id);
+	Task.find({user_id: req.payload._id}, function(err, tasks) {
 		if (err) {
+			console.log(err);
 			return next(err);	
 		}
 
@@ -32,6 +34,7 @@ router.get('/tasks', auth, function(req, res, next) {
 // Route to create a new task
 router.post('/tasks', auth, function(req, res, next) {
 	var task = new Task(req.body);
+	task.user_id = req.payload._id;
 
 	task.save(function(err, task) {
 		if (err) {
@@ -64,10 +67,21 @@ router.get('/tasks/:task', auth, function(req, res) {
 	res.json(req.task);
 });
 
+// For deleting a task
 router.delete('/tasks/:task', auth, function(req, res, next) {
 	Task.findById(req.params.task, function(err, task) {
 		if (err) {
 			return next(err);	
+		}
+		
+		// Ensure that there is a task
+		if (!task) {
+			return next(new Error("Cant find task"));	
+		}
+		
+		// Ensure that the user has permition to delete the task
+		if (task.user_id !== req.payload._id) {
+			return res.status(401);
 		}
 
 		task.remove(function(err) {
@@ -80,10 +94,21 @@ router.delete('/tasks/:task', auth, function(req, res, next) {
 	});
 });
 
+// For updating a task
 router.put('/tasks/:task', auth, function(req, res, next) {
 	Task.findById(req.params.task, function(err, task) {
 		if (err) {
 			return next(err);	
+		}
+		
+		// Ensure that there is a task
+		if (!task) {
+			return next(new Error("Cant find task"));	
+		}
+		
+		// Ensure that the user has permition to delete the task
+		if (task.user_id !== req.payload._id) {
+			return res.status(401);
 		}
 
 		task.done = req.body.done;
