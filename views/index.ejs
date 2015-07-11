@@ -47,6 +47,10 @@
 					<li><a href="#/tasks"
 						   ng-show="vm.isLoggedIn()">Tasks</a></li>
 					<li><a ng-click="vm.logout()" ng-show="vm.isLoggedIn()">Logout</a></li>
+					<li><a href="#/login"
+						   ng-hide="vm.isLoggedIn()">Login</a></li>
+					<li><a href="#/register"
+						   ng-hide="vm.isLoggedIn()">Register</a></li>
 				</ul>
 				
 				<p class="navbar-text navbar-right"
