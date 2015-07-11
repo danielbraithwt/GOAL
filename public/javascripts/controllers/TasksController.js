@@ -5,10 +5,10 @@
 		.module('goal')
 		.controller('tasksController', Controller);
 
-	Controller.$inject = ['$scope', 'tasks'];
+	Controller.$inject = ['$scope', 'tasks', 'auth'];
 
 	/* @ngInject */
-	function Controller($scope, tasks){
+	function Controller($scope, tasks, auth){
 		var vm = this;
 		vm.adding = false;
 
