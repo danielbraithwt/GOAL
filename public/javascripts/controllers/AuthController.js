@@ -13,10 +13,14 @@
 		vm.property = 'Controller';
 
 		vm.user = {}
-		
+
 		vm.register = register;
 		vm.login = login;
-		
+
+		if (auth.isLoggedIn()) {
+			$location.path('/overview');
+		}
+
 		////////////////
 
 		function register() {
@@ -27,7 +31,7 @@
 				$location.path('/overview');
 			});;
 		}
-		
+
 		function login() {
 			auth.login(vm.user).error(function(error) {
 				vm.error = error;

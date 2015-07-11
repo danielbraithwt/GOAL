@@ -12,7 +12,7 @@
 		var vm = this;
 		vm.property = 'Controller';
 		
-		vm.logout = logout();
+		vm.logout = auth.logout;
 		
 		vm.currentUser = auth.currentUser;
 		
@@ -22,7 +22,6 @@
 		
 		function logout() {
 			auth.logout();
-			$location.path('/');
 		}
 	}
 })();
