@@ -13,7 +13,7 @@ require('./models/Users');
 
 require('./config/passport');
 
-mongoose.connect('mongodb://localhost/goals');
+mongoose.connect('mongodb://' + process.env.GOAL_DB_PATH);
 
 var app = express();
 

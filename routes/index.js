@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var jwt = require('express-jwt');
-var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
+var auth = jwt({secret: process.env.GOAL_SECRET, userProperty: 'payload'});
 
 var passport = require('passport');
 
