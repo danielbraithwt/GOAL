@@ -14,7 +14,7 @@
 		};
 
 		// Create a socket to the webserver
-		var socket = io('http://localhost:3000');
+		var socket = io();//io('http://localhost:3000');
 		
 		return exports;
 
