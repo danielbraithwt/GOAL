@@ -1,73 +1,89 @@
 <!DOCTYPE html>
 
 <html ng-app="goal">
-    <head>
-        <title>GOAL!</title>
+	<head>
+		<title>GOAL!</title>
 
-		
+
 		<script src="/javascripts/lib/JQuery/jquery-2.1.4.min.js"></script>
-		
-        <!-- Load the bootstrap css file -->
-        <link rel="stylesheet" href="/stylesheets/bootstrap.css" />
+
+		<!-- Load the bootstrap css file -->
+		<link rel="stylesheet" href="/stylesheets/bootstrap.css" />
 		<link rel="stylesheet" href="/stylesheets/animations.css" />
 		<link rel="stylesheet" href="/stylesheets/index.css" />
 		<link rel="stylesheet" href="/stylesheets/tasks.css" />
 		<link rel="stylesheet" href="/stylesheets/global.css" />
-		
+
 		<script src="/javascripts/lib/bootstrap/bootstrap.min.js"></script>
 
-        <!-- Load all the angular file -->
-        <script src="/javascripts/lib/angular/angular.js"></script>
-        <script src="/javascripts/lib/angular/angular-route.js"></script>
+		<!-- Load all the angular file -->
+		<script src="/javascripts/lib/angular/angular.js"></script>
+		<script src="/javascripts/lib/angular/angular-route.js"></script>
 		<script src="/javascripts/lib/angular/angular-resource.js"></script>
 		<script src="/javascripts/lib/angular/angular-cookies.js"></script>
 
 		<!-- Load the chart js files -->
 		<script src="/javascripts/lib/chart/Chart.js"></script>
-		
+
 		<!-- Load the socket.io files -->
 		<script src="/javascripts/lib/socketio/socket.io.js"></script>
-		
-        <!-- Load our app -->
-        <script src="/javascripts/angularApp.js"></script>
-        <script src="/javascripts/config/route-config.js"></script>
-        
+
+		<!-- Load our app -->
+		<script src="/javascripts/angularApp.js"></script>
+		<script src="/javascripts/config/route-config.js"></script>
+
 		<script src="/javascripts/services/TasksService.js"></script>
 		<script src="/javascripts/services/AuthenticationService.js"></script>
 		<script src="/javascripts/services/SocketIOService.js"></script>
-		
-        <script src="/javascripts/controllers/IndexController.js"></script>
+
+		<script src="/javascripts/controllers/IndexController.js"></script>
 		<script src="/javascripts/controllers/TasksController.js"></script>
 		<script src="/javascripts/controllers/AuthController.js"></script>
 		<script src="/javascripts/controllers/OverviewController.js"></script>
 		<script src="/javascripts/controllers/HeaderController.js"></script>
-    </head>
+	</head>
 
-    <body>
-        <nav class="navbar navbar-defualt"
+	<body>
+		<nav class="navbar navbar-default"
 			 ng-controller="headerController as vm">
-			<div class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
-					<li><a href="#/overview"
-						   ng-show="vm.isLoggedIn()">Overview</a></li>
-					<li><a href="#/tasks"
-						   ng-show="vm.isLoggedIn()">Tasks</a></li>
-					<li><a href="#/"
-						   ng-click="vm.logout()" ng-show="vm.isLoggedIn()">Logout</a></li>
-					<li><a href="#/login"
-						   ng-hide="vm.isLoggedIn()">Login</a></li>
-					<li><a href="#/register"
-						   ng-hide="vm.isLoggedIn()">Register</a></li>
-				</ul>
-				
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">GOAL</a>
+				</div>
+
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+
+						<li class="dropdown">
+						<li><a href="#/overview"
+							   ng-show="vm.isLoggedIn()">Overview</a></li>
+						<li><a href="#/tasks"
+							   ng-show="vm.isLoggedIn()">Tasks</a></li>
+						<li><a href="#/"
+							   ng-click="vm.logout()" ng-show="vm.isLoggedIn()">Logout</a></li>
+						<li><a href="#/login"
+							   ng-hide="vm.isLoggedIn()">Login</a></li>
+						<li><a href="#/register"
+							   ng-hide="vm.isLoggedIn()">Register</a></li>
+
+						</li>
+					</ul>
+
 				<p class="navbar-text navbar-right" style="margin-right: 10px;"
 				   ng-show="vm.currentUser() !== undefined">Signed in as {{vm.currentUser()}}</p>
 			</div>
+			</div>
 		</nav>
-		
-        <div class="container">
-            <div ng-view></div>
-        </div>
-        
-    </body>
+
+	<div class="container">
+		<div ng-view></div>
+	</div>
+
+	</body>
 </html>
