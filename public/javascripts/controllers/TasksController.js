@@ -39,6 +39,7 @@
 
 		$scope.$on("tasksReady", function(e, tasks) {
 			vm.goals = tasks;	
+			console.log("Recived Tasks: " + vm.goals);
 		});
 
 		// Adds a goal to the array of goals
@@ -70,6 +71,8 @@
 			vm.goalImportance = '';
 
 			vm.adding = false;
+			
+			console.log(vm.goals);
 		}
 
 		// Removes the goal at index from the array

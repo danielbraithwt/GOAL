@@ -44,9 +44,10 @@
 		
 		function addTask(task) {
 			$http.post('/tasks', task, {headers: {Authorization: 'Bearer ' + auth.getToken()}}).success(function(data) {
-				tasks.push(data);	
+				//tasks.push(data);	
 				emitUpdated();
-				emitTasksReady();
+				//emitTasksReady();
+				getTasksFromDB();
 			});
 		}
 		
