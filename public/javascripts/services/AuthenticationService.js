@@ -53,7 +53,7 @@
 		
 		function register(user) {
 			return $http.post('/register', user).success(function(data) {
-				saveToken(data, data.token);
+				saveToken(data.token);
 				socketio.emit('loggedin', user);
 			});
 		}
