@@ -57,7 +57,9 @@
 			var width = canvasContainer.offsetWidth;
 			var height = canvasContainer.offsetHeight;
 
-			width = height = 400;
+			width = height = Math.min(width, height) - 30;
+			
+			console.log(width);
 
 			var canvas = document.getElementById("progress_graph");
 			canvas.height = height;
