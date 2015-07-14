@@ -17,6 +17,10 @@
 			getToken: getToken
 		};
 		
+		if (isLoggedIn()) {
+			socketio.emit('loggedin', {username: currentUser()});
+		}
+		
 
 		return exports;
 

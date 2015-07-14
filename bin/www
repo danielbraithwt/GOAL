@@ -46,6 +46,8 @@ io.on('connection', function(socket) {
 		
 		usersToSockets[data.username].push(socket.id);
 		socketsToUser[socket.id] = data.username;
+		
+		console.log("Login -> " + data.username + " has " + usersToSockets[data.username].length + " connected clients");
 	});
 			  
 	// When the user logs out then we want to remove them from the list
@@ -58,12 +60,13 @@ io.on('connection', function(socket) {
 		
 		socketsToUser[socket.id] = undefined;		usersToSockets[username].splice(usersToSockets[username].indexOf(socket.id), 1);
 	
+		console.log("Logout -> " + data.username + " has " + usersToSockets[data.username].length + " connected clients");
 	});
 	
 	
 	socket.on('updated', function(data) {
 		var users = usersToSockets[data.username];
-		if (users.lenght != 0) {
+		if (users.length != 0) {
 			for (var i = 0; i < users.length; i++) {
 				io.to(users[i]).emit('update');
 			}
