@@ -13,6 +13,7 @@
 		vm.property = 'Controller';
 
 		vm.user = {}
+		vm.error = undefined;
 
 		vm.register = register;
 		vm.login = login;
@@ -26,6 +27,7 @@
 		function register() {
 			console.log(vm.user);
 			auth.register(vm.user).error(function(error) {
+				console.log(error);
 				vm.error = error;
 			}).then(function() {
 				$location.path('/overview');
@@ -34,6 +36,7 @@
 
 		function login() {
 			auth.login(vm.user).error(function(error) {
+				console.log(error);
 				vm.error = error;
 			}).then(function() {
 				$location.path('/overview');
